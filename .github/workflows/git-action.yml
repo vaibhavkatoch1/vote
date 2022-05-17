@@ -32,11 +32,11 @@ jobs:
       # Create the Elastic Beanstalk environment
       - name: Create test environment
         run: |
-          eb create test-environment
+          eb create demo-environment
       
       - name: Deploying docker compose
         run: |
-          eb open test-environment
+          eb open demo-environment
 
      
 
