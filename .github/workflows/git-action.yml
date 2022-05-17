@@ -11,6 +11,9 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE
       - uses: actions/checkout@v2
 
+      - name: Build the Docker image
+        run: docker build -t voting-app -f Dockerfile .
+
       # Elastic Beanstalk CLI version
       - name: Get EB CLI version
         run: |
