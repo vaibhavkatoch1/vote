@@ -22,12 +22,20 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+
       # Install Redis
       - uses: actions/checkout@v3
       - uses: shogo82148/actions-setup-redis@v1
         with:
           redis-version: '6.2'
       - run: redis-cli ping
+
+      #Build the stack
+      - uses: actions/checkout@v2
+      - name: Build the stack
+        run: docker-compose up -d
+      #- name: Test
+        #run: docker run --network container:webapp-frontend appropriate/curl -s --retry 10 --retry-connrefused http://localhost:5000/
 
 
       # Elastic Beanstalk CLI version
@@ -36,6 +44,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install awsebcli --upgrade
           eb --version
+
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -46,9 +55,15 @@ jobs:
       # Create the Elastic Beanstalk application
       - name: Create EBS application
         run: |
-          eb init -p python-3.6 app.py --region us-west-2
+          eb init -p python-3.6 Github-actions/vote/app.py --region us-west-2
+
       # Create the Elastic Beanstalk environment
       - name: Create test environment
         run: |
           eb create test-environment
+
+      
+
+     
+
 
